@@ -1,0 +1,14 @@
+{
+  "name": "gfsm",
+  "version": "0.1.0",
+  "description": "A generator based finite state machine implementation",
+  "main": "index.js",
+  "scripts": {
+    "test": "jasmine-node test"
+  },
+  "author": "Cristiano Cortezia <cristiano.cortezia@gmail.com>",
+  "license": "MIT",
+  "devDependencies": {
+    "jasmine-node": "^1.14.5"
+  }
+}
