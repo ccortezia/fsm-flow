@@ -1,7 +1,7 @@
 {
-  "name": "gfsm",
+  "name": "fsm-flow",
   "version": "0.1.0",
-  "description": "A generator based finite state machine implementation",
+  "description": "A stream-ready finite state machine implementation",
   "main": "index.js",
   "scripts": {
     "test": "jasmine-node test"
