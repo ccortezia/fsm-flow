@@ -1,14 +1,23 @@
 {
   "name": "fsm-flow",
   "version": "0.1.0",
-  "description": "A stream-ready finite state machine implementation",
   "main": "index.js",
   "scripts": {
     "test": "jasmine-node test"
   },
-  "author": "Cristiano Cortezia <cristiano.cortezia@gmail.com>",
-  "license": "MIT",
   "devDependencies": {
     "jasmine-node": "^1.14.5"
+  },
+  "description": "A stream-ready finite state machine implementation",
+  "author": "Cristiano Cortezia <cristiano.cortezia@gmail.com>",
+  "keywords": ["fsm", "stream", "generator"],
+  "homepage": "https://github.com/ccortezia/fsm-flow",
+  "license": "MIT",
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/ccortezia/fsm-flow.git"
+  },
+  "bugs": {
+    "url": "https://github.com/ccortezia/fsm-flow/issues"
   }
 }
