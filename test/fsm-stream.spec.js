@@ -13,12 +13,12 @@ describe('An non-empty valid fsm generator stream', function(){
 
   beforeEach(function(){
     fsm = new FSM(map, 'st0');
+    fsm.init();
     acc = [];
   });
 
   function touch() {
     setTimeout(function(){
-      fsm.init();
       fsm.touch('ev1');
       fsm.touch('ev3');
       fsm.touch('ev1');
@@ -47,7 +47,6 @@ describe('An non-empty valid fsm generator stream', function(){
   });
 
   it('should properly stream state changes in flowing mode', function(done){
-
     fsm.ostream.on('data', function(chunk){
       acc.push(chunk);
     });
@@ -62,5 +61,44 @@ describe('An non-empty valid fsm generator stream', function(){
     });
 
     touch();
+  });
+
+  it('should evolve from streamed events', function(done){
+    fsm.istream.write('ev1');
+    expect(fsm.current).toEqual('st1');
+    fsm.istream.write('ev0');
+    expect(fsm.current).toBe(null);
+    fsm.istream.end();
+
+    fsm.istream.on('finish', function(){
+      done();
+    });
+  });
+
+  it('should properly behave on a pipe', function(done){
+
+    var events = ['ev1', 'ev3', 'ev1', 'ev3', 'ev1', 'ev3', 'ev0', null];
+    var states = ['st1', 'st3', 'st1', 'st3', 'st1', 'st3'];
+
+    var eventSource = new require('stream').Readable({
+      read: function(n) {
+        this.push(events.shift());
+      }
+    });
+
+    var stateDrain = new require('stream').Writable({
+      write: function(chunk, encoding,  callback) {
+        chunk = chunk.toString('ascii');
+        acc.push(chunk);
+        if (acc.length >= states.length) {
+          expect(acc).toEqual(states);
+          done();
+        }
+        callback();
+      }
+    });
+
+    eventSource.pipe(fsm.istream);
+    fsm.ostream.pipe(stateDrain);
   });
 });
