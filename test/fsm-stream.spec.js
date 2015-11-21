@@ -1,5 +1,7 @@
-FSM = require('../lib/fsm').FSM;
-FSMFlow = require('../lib/fsm').FSMFlow;
+var FSM = require('../lib/fsm').FSM;
+var StateFlowStream = require('../lib/st-stream');
+var EventFlowStream = require('../lib/ev-stream');
+var DuplexFlowStream = require('../lib/duplex-stream');
 
 
 describe('An non-empty valid fsm generator stream', function(){
@@ -14,6 +16,8 @@ describe('An non-empty valid fsm generator stream', function(){
 
   beforeEach(function(){
     fsm = new FSM(map, 'st0');
+    ostream = new StateFlowStream(fsm);
+    istream = new EventFlowStream(fsm);
     fsm.init();
     acc = [];
   });
@@ -31,16 +35,16 @@ describe('An non-empty valid fsm generator stream', function(){
   }
 
   it('should properly stream state changes in paused mode', function(done){
-    fsm.ostream.on('readable', function(){
-      acc.push(fsm.ostream.read());
+    ostream.on('readable', function(){
+      acc.push(ostream.read());
     });
 
-    fsm.ostream.on('close', function(){
+    ostream.on('close', function(){
       // The ending null is present in paused mode.
       expect(acc).toEqual(['st1', 'st3', 'st1', 'st3', 'st1', 'st3', null]);
     });
 
-    fsm.ostream.on('end', function(){
+    ostream.on('end', function(){
       done();
     });
 
@@ -48,16 +52,16 @@ describe('An non-empty valid fsm generator stream', function(){
   });
 
   it('should properly stream state changes in flowing mode', function(done){
-    fsm.ostream.on('data', function(chunk){
+    ostream.on('data', function(chunk){
       acc.push(chunk);
     });
 
-    fsm.ostream.on('close', function(){
+    ostream.on('close', function(){
       // The ending null is not present in flowing mode.
       expect(acc).toEqual(['st1', 'st3', 'st1', 'st3', 'st1', 'st3']);
     });
 
-    fsm.ostream.on('end', function(){
+    ostream.on('end', function(){
       done();
     });
 
@@ -65,13 +69,13 @@ describe('An non-empty valid fsm generator stream', function(){
   });
 
   it('should evolve from streamed events', function(done){
-    fsm.istream.write('ev1');
+    istream.write('ev1');
     expect(fsm.current).toEqual('st1');
-    fsm.istream.write('ev0');
+    istream.write('ev0');
     expect(fsm.current).toBe(null);
-    fsm.istream.end();
+    istream.end();
 
-    fsm.istream.on('finish', function(){
+    istream.on('finish', function(){
       done();
     });
   });
@@ -99,8 +103,8 @@ describe('An non-empty valid fsm generator stream', function(){
       }
     });
 
-    eventSource.pipe(fsm.istream);
-    fsm.ostream.pipe(stateDrain);
+    eventSource.pipe(istream);
+    ostream.pipe(stateDrain);
   });
 });
 
@@ -117,7 +121,8 @@ describe('An non-empty valid flow fsm', function(){
   };
 
   beforeEach(function(){
-    fsm = new FSMFlow(map, 'st0');
+    fsm = new FSM(map, 'st0');
+    dstream = new DuplexFlowStream(fsm);
     fsm.init();
     acc = [];
   });
@@ -144,7 +149,7 @@ describe('An non-empty valid flow fsm', function(){
         acc.push(chunk);
         if (acc.length >= states.length) {
           expect(acc).toEqual(states);
-          expect(fsm.done()).toBe(true);
+          expect(fsm.done).toBe(true);
           done();
         }
         callback();
@@ -152,7 +157,7 @@ describe('An non-empty valid flow fsm', function(){
     });
 
     eventSource
-      .pipe(fsm)
+      .pipe(dstream)
       .pipe(stateDrain);
   });
 
