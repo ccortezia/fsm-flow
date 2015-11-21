@@ -1,7 +1,7 @@
 var FSM = require('../lib/fsm').FSM;
-var StateFlowStream = require('../lib/st-stream');
-var EventFlowStream = require('../lib/ev-stream');
-var DuplexFlowStream = require('../lib/duplex-stream');
+var StateFlowStream = require('../lib/stream/state');
+var EventFlowStream = require('../lib/stream/event');
+var DuplexFlowStream = require('../lib/stream/duplex');
 
 
 describe('An non-empty valid fsm generator stream', function(){
