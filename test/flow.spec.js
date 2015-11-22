@@ -1,6 +1,5 @@
 const stream = require('stream');
-const FSM = require('../lib/fsm').FSM;
-const DuplexFlowFSM = require('../lib/flow').DuplexFlowFSM;
+const FlowFSM = require('../lib/flow');
 
 
 describe('An non-empty valid flow fsm', function(){
@@ -14,7 +13,7 @@ describe('An non-empty valid flow fsm', function(){
   };
 
   beforeEach(function(){
-    fsm = new DuplexFlowFSM(map, 'st0');
+    fsm = new FlowFSM(map, 'st0');
     fsm.init();
     acc = [];
   });

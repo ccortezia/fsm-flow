@@ -1,4 +1,4 @@
-FSM = require('../lib/fsm').FSM;
+const FSM = require('../lib/fsm');
 
 
 describe('An empty fsm', function(){

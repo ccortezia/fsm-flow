@@ -1,5 +1,4 @@
-
-GFSM = require('../lib/gfsm').GFSM;
+const GFSM = require('../lib/gfsm');
 
 
 describe('An empty gfsm', function(){
