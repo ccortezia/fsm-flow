@@ -1,5 +1,7 @@
 # fsm-flow
 
+[![build status](https://secure.travis-ci.org/ccortezia/fsm-flow.png)](http://travis-ci.org/ccortezia/fsm-flow)
+
 A stream friendly Finite State Machine implementation.
 
 Consider the following FSM map representation:
