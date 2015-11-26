@@ -1,7 +1,7 @@
 # fsm-flow
 
 [![build status](https://secure.travis-ci.org/ccortezia/fsm-flow.png)](http://travis-ci.org/ccortezia/fsm-flow)
-[![Coverage Status](https://coveralls.io/repos/ccortezia/fsm-flow/badge.svg?branch=master)](https://coveralls.io/r/ccortezia/fsm-flow?branch=master)
+[![Coverage Status](https://coveralls.io/repos/ccortezia/fsm-flow/badge.svg?branch=master&service=github)](https://coveralls.io/github/ccortezia/fsm-flow?branch=master)
 
 A stream friendly Finite State Machine implementation.
 
