@@ -3,7 +3,8 @@
   "version": "0.3.0",
   "main": "index.js",
   "scripts": {
-    "test": "istanbul cover jasmine-node --captureExceptions test/ && cat ./coverage/lcov.info | ./node_modules/coveralls/bin/coveralls.js && rm -rf ./coverage"
+    "test": "istanbul cover jasmine-node --captureExceptions test/",
+    "coveralls": "istanbul cover jasmine-node --captureExceptions test/ && cat ./coverage/lcov.info | ./node_modules/coveralls/bin/coveralls.js && rm -rf ./coverage"
   },
   "devDependencies": {
     "coveralls": "^2.11.4",
